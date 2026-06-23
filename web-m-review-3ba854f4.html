@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷速 · 信息卡片式介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f9fafc;
+            font-family: system-ui, -apple-system, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1a1f2e;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .narrow {
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 主视觉 header */
+        .hero {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 2.8rem 2rem 2.4rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 20px -8px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .hero:hover {
+            box-shadow: 0 12px 28px -10px rgba(0,0,0,0.08);
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: #121826;
+            border-left: 5px solid #3b82f6;
+            padding-left: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero .sub {
+            font-size: 1.1rem;
+            color: #4b5563;
+            max-width: 580px;
+            margin-top: 0.25rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero .meta {
+            color: #6b7280;
+            font-size: 0.9rem;
+            border-top: 1px solid #eef0f4;
+            padding-top: 1.2rem;
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.8rem;
+        }
+
+        /* 卡片组 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #edf0f6;
+            transition: transform 0.1s ease, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px -10px rgba(0,0,0,0.06);
+            border-color: #dbe1ed;
+        }
+
+        .card .emoji-icon {
+            font-size: 1.9rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 550;
+            margin-bottom: 0.5rem;
+            color: #0b1e33;
+        }
+
+        .card p {
+            color: #3d4659;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .card.tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem 0.7rem;
+        }
+
+        .tag {
+            background: #eff3fb;
+            color: #1e3c6f;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 480;
+            letter-spacing: 0.01em;
+        }
+
+        /* 自然链接段落 + 承接文本 */
+        .context-block {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2rem 2rem 2rem;
+            margin: 1.2rem 0 2.5rem;
+            border: 1px solid #eef2f7;
+        }
+
+        .context-block p {
+            margin-bottom: 1.2rem;
+            color: #283044;
+            font-size: 1rem;
+        }
+
+        .context-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .context-block a {
+            color: #2667d6;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid #bcd1f0;
+            transition: border-color 0.15s, color 0.1s;
+        }
+
+        .context-block a:hover {
+            border-bottom-color: #2667d6;
+            color: #003a9e;
+        }
+
+        .faq-mini {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2rem 1.8rem;
+            margin-top: 0.2rem;
+            border: 1px solid #ecf0f6;
+        }
+
+        .faq-mini details {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #f1f4fa;
+            padding-bottom: 0.8rem;
+        }
+
+        .faq-mini details:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .faq-mini summary {
+            font-weight: 520;
+            color: #1f2937;
+            cursor: pointer;
+            font-size: 0.98rem;
+            padding: 0.2rem 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .faq-mini summary::before {
+            content: "▸";
+            margin-right: 0.6rem;
+            color: #6088d4;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: transform 0.12s;
+        }
+
+        .faq-mini details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .faq-mini details p {
+            color: #4b5563;
+            padding: 0.6rem 0 0.2rem 1.6rem;
+            font-size: 0.92rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 2.8rem;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+            border-top: 1px solid #e9edf4;
+            padding-top: 2rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 560px) {
+            body {
+                padding: 1.6rem 0.8rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .hero {
+                padding: 1.8rem 1.2rem;
+            }
+            .context-block {
+                padding: 1.5rem 1.2rem;
+            }
+            .faq-mini {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (min-width: 561px) and (max-width: 720px) {
+            .card-grid {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="narrow">
+
+        <!-- 主视觉 + 用途卡片、适合人群等融合 -->
+        <div class="hero">
+            <h1>雷速 · 信息结构</h1>
+            <div class="sub">
+                围绕关键词背后的主题内容展开，从数据流向到场景交互，梳理信息卡片式的知识轮廓。
+            </div>
+            <div class="meta">
+                <span>⚡ 主题方向 · 信息卡片式</span>
+                <span>·</span>
+                <span>极简留白 · 窄正文</span>
+            </div>
+        </div>
+
+        <!-- 双用途卡片 -->
+        <div class="card-grid">
+            <div class="card">
+                <div class="emoji-icon">🧩</div>
+                <h3>用途卡片</h3>
+                <p>信息聚合、内容节点、场景索引。把复杂资料拆解为可交互的卡片模块，降低认知负荷，提升筛选效率。</p>
+            </div>
+            <div class="card">
+                <div class="emoji-icon">👥</div>
+                <h3>适合人群</h3>
+                <p>内容研究者、效率工具使用者、需要快速理解信息结构的知识工作者，以及对卡片式交互感兴趣的用户。</p>
+            </div>
+        </div>
+
+        <!-- 自然链接段落 + 卡片式介绍延伸 -->
+        <div class="context-block">
+            <p>
+                卡片式信息组织的核心在于「单元化」：每一个卡片独立承载一个主题或一类数据，同时又通过视觉层级和空间关系形成整体。而<strong>雷速</strong>所代表的方向，恰好与此呼应——将信息拆解为可重组、可追溯的模块，让用户在浏览过程中自然建立认知地图。
+            </p>
+            <p>
+                从信息架构的角度看，<a href="https://web-m-leisu.com">雷速</a>的呈现逻辑更接近一种「知识节点」的展示方式：每个卡片既是一个独立的入口，也是整体信息流的一部分。在真实的阅读场景中，这种结构能够帮助读者快速定位感兴趣的内容片段，而不必在长文本中反复搜索。
+            </p>
+            <p>
+                主题内容展开时，卡片式设计天然支持从概要深入到细节的渐进式阅读。例如在技术文档、工具介绍或方法论梳理中，使用卡片分组可以兼顾视觉节奏和内容密度——这正是本次页面希望传递的体验。
+            </p>
+        </div>
+
+        <!-- 特点与场景（卡片融合） -->
+        <div class="card-grid">
+            <div class="card">
+                <div class="emoji-icon">📐</div>
+                <h3>结构特点</h3>
+                <p>清晰的标题层级、窄正文宽度、卡片间适度留白，让信息呼吸。视觉上减少干扰，突出内容本身的逻辑。</p>
+            </div>
+            <div class="card">
+                <div class="emoji-icon">🌱</div>
+                <h3>使用场景</h3>
+                <p>个人知识库、项目介绍页、轻量级文档、卡片式博客索引。尤其适合需要快速概览多个模块的内容集合。</p>
+            </div>
+        </div>
+
+        <!-- FAQ 摘要 -->
+        <div class="faq-mini">
+            <details>
+                <summary>卡片式设计如何提升信息接收效率？</summary>
+                <p>通过将信息切分为可独立理解的单元，用户可以根据需要选择性阅读，避免线性文本中的无关信息干扰。卡片之间的视觉对比也助于快速建立优先级。</p>
+            </details>
+            <details>
+                <summary>这个页面适合展示哪些主题的内容？</summary>
+                <p>适合主题明确、知识颗粒度适中的内容，例如方法论、产品功能拆解、概念对比或学习路径。密集叙事的长文则不推荐使用卡片式。</p>
+            </details>
+            <details>
+                <summary>窄正文宽度的考虑是什么？</summary>
+                <p>根据阅读研究，每行 60–75 字符是最佳阅读宽度。窄正文配合留白可以减少眼球移动负担，在卡片式布局中也能保持内容专注度。</p>
+            </details>
+        </div>
+
+        <!-- 提示 / 结语 -->
+        <div class="footer-note">
+            信息卡片式 · 结构优先 · 内容自然承接
+        </div>
+
+    </div>
+</body>
+</html>
